@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 
 //Donot try to keep any references towards the view as the chances to memory lekages gets increased
 
-class MainViewModel: ViewModel() {
+class MainViewModel(val initialvalue:Int): ViewModel() {
 
-    var count:Int=0
+    var count:Int=initialvalue
 
     fun increment(){
         count++

@@ -55,6 +55,31 @@ class MainViewModel: ViewModel() {
 }
 ```
 
+Following Changes were Made :- <br>
+Step 1: Creation of MainViewModelFactory.kt Class, using parameters and extending with ViewModelProvider.Factory + Implmenting all compulsory Methods  :- <br>
+```
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+
+class MainViewModelFactory(val counter:Int):ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return MainViewModel(counter) as T
+    }
+
+    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+        return super.create(modelClass, extras)
+    }
+}
+```
+
+Step 2: Make Changes in our MainActivity which is responsible for updating Views:-
+```
+lateinit var mainViewModel:MainViewModel
+
+mainViewModel=ViewModelProvider(this,MainViewModelFactory(10)).get(MainViewModel::class.java)
+```
+That's it ;)
 
 ### Plugins Required:-
 ```
