@@ -13,7 +13,7 @@ It mainly consists of two Components :-
 	* LifeCycle Owner
 	* LifeCycle Observer 
 
-View Model
+## View Model
 
 * Model for your views such as Activity or Fragment.
 
@@ -39,7 +39,8 @@ id 'kotlin-kapt'
     }
 ```
 
-### Dependency Required:-```
+### Dependency Required:-
+```
     def room_version = "2.4.3"
     //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
