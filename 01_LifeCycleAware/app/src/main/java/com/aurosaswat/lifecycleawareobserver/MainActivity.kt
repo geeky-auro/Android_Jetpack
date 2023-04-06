@@ -12,5 +12,25 @@ class MainActivity : AppCompatActivity() {
         Log.d("MAIN","Activity onCreate")
     }
 
+    override fun onStop() {
+        super.onStop()
+        lifecycle.addObserver(Observer())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycle.addObserver(Observer())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        lifecycle.addObserver(Observer())
+    }
+
+    override fun onPause() {
+        super.onPause()
+        lifecycle.addObserver(Observer())
+    }
+
 
 }
