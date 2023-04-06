@@ -108,4 +108,59 @@ id 'kotlin-kapt'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     // For Android Specific Libraries ;)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+	<!-- For Networking GSON -->
+	implementation 'com.google.code.gson:gson:2.9.0'
 ```
+
+### Creation of Elegant Custom Card 
+<br>
+Create a New Drawable File (ex: bg_card) and Paste the following code ;)
+<br>
+~~~
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#33000000"></solid>
+            <corners android:radius="20dp"></corners>
+        </shape>
+    </item>
+
+    <item android:right="2dp"
+        android:left="2dp"
+        android:bottom="4dp"
+        >
+        <shape>
+            <solid android:color="#FFF"></solid>
+            <corners android:radius="20dp"></corners>
+        </shape>
+    </item>
+</layer-list>
+~~~
+***Next*** : Use it as background ;)
+~~~
+ android:background="@drawable/bg_card"
+~~~
+
+
+### Creation of Gradients 
+~~~
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient android:startColor="#1D2671" android:endColor="#C33764"
+        android:type="linear"
+        android:angle="270"/>
+</shape>
+~~~
+
+### For FullScreen,No Action Bar, Transparent Backgound
+Add the below in themes.xml ;)
+~~~
+        <item name="android:windowNoTitle">true</item>
+        <!--    For No Action Bar    -->
+        <item name="android:windowActionBar">false</item>
+        <!--    For Full Screen App    -->
+        <item name="android:windowFullscreen">true</item>
+        <!--   No Content Overlay means it will be transparent ;)     -->
+        <item name="android:windowContentOverlay">@null</item>
+~~~
