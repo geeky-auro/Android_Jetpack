@@ -137,9 +137,13 @@ Create a New Drawable File (ex: bg_card) and Paste the following code ;)
     </item>
 </layer-list>
 ~~~
-***Next*** : Use it as background ;)
+
+**Next** : Use it as background ;)
+
 ~~~
+
  android:background="@drawable/bg_card"
+
 ~~~
 
 
