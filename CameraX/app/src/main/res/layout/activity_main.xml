@@ -15,16 +15,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/image_capture_button"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:elevation="2dp"
-        android:backgroundTint="@color/white"
+        android:background="@drawable/circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/vertical_centerline"></Button>
+        app:layout_constraintTop_toTopOf="@+id/vertical_centerline"></com.google.android.material.button.MaterialButton>
 
 
     <androidx.constraintlayout.widget.Guideline
