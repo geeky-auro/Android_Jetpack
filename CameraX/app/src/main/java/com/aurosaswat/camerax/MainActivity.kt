@@ -2,7 +2,9 @@ package com.aurosaswat.camerax
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -24,9 +26,11 @@ import android.view.View.OnTouchListener
 import androidx.camera.core.*
 import androidx.camera.core.impl.PreviewConfig
 import androidx.camera.extensions.internal.PreviewConfigProvider
+import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import com.aurosaswat.camerax.databinding.ActivityMainBinding
 import com.google.common.util.concurrent.ListenableFuture
+import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -37,8 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewBinding: ActivityMainBinding
     private var imageCapture: ImageCapture? = null
-    private var videoCapture: VideoCapture<Recorder>? = null
-    private var recording: Recording? = null
     private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,10 +180,6 @@ class MainActivity : AppCompatActivity() {
 ////                    val currentZoomRatio=it.zoomRatio
 ////                })
 
-
-
-
-
             } catch(exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
@@ -201,7 +199,7 @@ class MainActivity : AppCompatActivity() {
         val imageCapture = imageCapture ?: return
 
         // Create time stamped name and MediaStore entry.
-        val name = SimpleDateFormat("EEEE dd MMM yyyy", Locale.US)
+        val name = SimpleDateFormat(FILEMAN_FORMAT, Locale.US)
             .format(System.currentTimeMillis())
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
@@ -210,6 +208,12 @@ class MainActivity : AppCompatActivity() {
                 put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
             }
         }
+
+//        val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        // Save the captured image to the output stream
+//        val outputStream = contentResolver.openOutputStream(uri!!)
+
 
         // Create output options object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions
@@ -228,9 +232,16 @@ class MainActivity : AppCompatActivity() {
                     Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                 }
 
-                override fun onImageSaved(output: ImageCapture.OutputFileResults){
-                    val msg = "Photo capture succeeded: ${output.savedUri}"
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults){
+                    val msg = "Photo capture succeeded: ${outputFileResults.savedUri}"
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+
+//                    val tsavedUri = outputFileResults.savedUri ?: Uri.fromFile(File(outputFileResults.savedFile!!.absolutePath))
+
+                    val intent = Intent(this@MainActivity, CameraDisplayActivity::class.java)
+                    intent.putExtra("URI_DATA",outputFileResults.savedUri.toString())
+                    startActivity(intent)
+
 
                     Log.d(TAG, msg)
                 }
