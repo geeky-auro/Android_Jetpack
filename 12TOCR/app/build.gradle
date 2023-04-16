@@ -46,7 +46,30 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 //    https://github.com/CanHub/Android-Image-Cropper
-    implementation("com.vanniktech:android-image-cropper:4.5.0")
+
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+
+    def camerax_version = "1.2.2"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-video:${camerax_version}"
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
+
+
+    // Material Dialog Library
+    implementation 'dev.shreyaspatil.MaterialDialog:MaterialDialog:2.2.3'
+
+    // Material Design Library
+    implementation 'com.google.android.material:material:1.0.0'
+
+    // Lottie Animation Library
+    implementation 'com.airbnb.android:lottie:3.3.6'
+
+
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
+
 }

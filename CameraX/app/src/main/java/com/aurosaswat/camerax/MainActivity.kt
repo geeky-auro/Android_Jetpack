@@ -253,7 +253,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         cameraExecutor.shutdown()
     }
-
     companion object{
         private const val TAG ="CameraXApp"
         private const val FILEMAN_FORMAT="yyyy-MM-dd-HH-mm-ss-SSS"

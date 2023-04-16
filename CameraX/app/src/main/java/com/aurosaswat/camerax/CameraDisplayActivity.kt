@@ -11,6 +11,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -32,16 +34,27 @@ class CameraDisplayActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityCameraDisplayBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         val contentResolver: ContentResolver = CameraDisplayActivity@ this.getContentResolver()
         val inputStream: InputStream? =contentResolver.openInputStream(Uri.parse(intent.getStringExtra("URI_DATA")))
         val bitmap = BitmapFactory.decodeStream(inputStream)
         viewBinding.cropImageView.setImageUriAsync(Uri.parse(intent.getStringExtra("URI_DATA")))
+        viewBinding.cropImageView.setImageBitmap(bitmap)
+        var uriI:Uri?
+        viewBinding.cropImageView.setOnCropImageCompleteListener{view,result->
+            val croppedImageUri=result.uriContent
+            uriI=croppedImageUri
+        }
+
+        viewBinding.cropImageView.croppedImageAsync()
+
 
         viewBinding.button.setOnClickListener{
-            val cropped = viewBinding.cropImageView.getCroppedImage()
+
 //            val bs=ByteArrayOutputStream()
 //            cropped?.compress(Bitmap.CompressFormat.PNG,50,bs)
-
+            val cropped = viewBinding.cropImageView.getCroppedImage()
 
 //            getDir() method is used to get or create a directory inside the app's internal storage space.
             var cw=ContextWrapper(applicationContext)
@@ -63,7 +76,7 @@ class CameraDisplayActivity : AppCompatActivity() {
             }
             finally {
                 val intent = Intent(this, DisplayCroppedPhoto::class.java)
-                intent.putExtra("BitmapImage", myPath)
+                intent.putExtra("BitmapImage", myPath.absolutePath)
                 startActivity(intent)
             }
 
