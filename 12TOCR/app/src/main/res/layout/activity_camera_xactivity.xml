@@ -26,18 +26,33 @@
             android:id="@+id/image_capture_button"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginEnd="10dp"
             app:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/SelectImage"
             app:layout_constraintTop_toTopOf="@+id/vertical_centerline"></com.google.android.material.button.MaterialButton>
+
+
+        <ImageButton
+            android:id="@+id/SelectImage"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_select_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/vertical_centerline"></ImageButton>
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/vertical_centerline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent=".750" />
+            app:layout_constraintGuide_begin="549dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

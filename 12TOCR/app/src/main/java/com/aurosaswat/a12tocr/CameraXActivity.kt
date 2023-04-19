@@ -15,6 +15,7 @@ import android.view.ScaleGestureDetector
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
@@ -38,6 +39,14 @@ class CameraXActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private val contract=registerForActivityResult(ActivityResultContracts.GetContent()){
+        val intent = Intent(this@CameraXActivity, ImageToText::class.java)
+        intent.putExtra("URI_DATA",it.toString())
+        startActivity(intent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding=ActivityCameraXactivityBinding.inflate(layoutInflater)
@@ -57,13 +66,16 @@ class CameraXActivity : AppCompatActivity() {
             takePhoto()
         }
 
+        viewBinding.SelectImage.setOnClickListener {
+            contract.launch("image/*")
+        }
+
         cameraExecutor=Executors.newSingleThreadExecutor()
 
     }
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
         cameraProviderFuture.addListener({
             // Used to bind the lifecycle of cameras to the lifecycle owner
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()

@@ -32,31 +32,29 @@ import java.io.InputStream
 @RequiresApi(Build.VERSION_CODES.M)
 class ImageToText : AppCompatActivity() {
    private lateinit var viewBinding:ActivityImageToTextBinding
-    val recognizer= TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+    private val recognizer= TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding=ActivityImageToTextBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-
-        val contentResolver: ContentResolver = ImageToText@this.getContentResolver()
+        val contentResolver: ContentResolver = this.contentResolver
         val inputStream: InputStream? =contentResolver.openInputStream(Uri.parse(intent.getStringExtra("URI_DATA")))
         val bitmap = BitmapFactory.decodeStream(inputStream)
         viewBinding.imageView.setImageBitmap(bitmap)
-
         processImage(bitmap)
     }
 
     private fun processImage(imageBitmap:Bitmap?) {
         if (imageBitmap!=null){
-            val image=imageBitmap?.let {
+            val image= imageBitmap.let {
                 InputImage.fromBitmap(it,0)
             }
-            image?.let { it ->
+            image.let { it ->
                 recognizer.process(it)
                     .addOnSuccessListener {
-//                    Display the text
+        //                    Display the text
                         viewBinding.viewText.text=it.text
-//                        showDialog(it.text)
+        //                        showDialog(it.text)
                     }
                     .addOnFailureListener {
                         Toast.makeText(this,"Nothing to Show ", Toast.LENGTH_SHORT).show()
