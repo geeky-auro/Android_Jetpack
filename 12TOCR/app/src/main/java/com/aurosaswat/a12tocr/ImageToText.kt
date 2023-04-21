@@ -1,32 +1,27 @@
 package com.aurosaswat.a12tocr
 
 
-import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.ContentResolver
 import android.content.Context
-import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
-import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.aurosaswat.a12tocr.databinding.ActivityImageToTextBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.shashank.sony.fancytoastlib.FancyToast
 import java.io.InputStream
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -53,40 +48,41 @@ class ImageToText : AppCompatActivity() {
                 recognizer.process(it)
                     .addOnSuccessListener {
         //                    Display the text
-                        viewBinding.viewText.text=it.text
-        //                        showDialog(it.text)
+//                        viewBinding.viewText.text=it.text
+                        showDialog(it.text.toString())
+
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this,"Nothing to Show ", Toast.LENGTH_SHORT).show()
+                        FancyToast.makeText(this,"Nothing to Show ",FancyToast.LENGTH_LONG,FancyToast.ERROR,true).show()
                     }
             }
         }
         else{
-            Toast.makeText(this,"Please Select Image First", Toast.LENGTH_SHORT).show()
+            FancyToast.makeText(this,"Please Select Image First",FancyToast.LENGTH_LONG,FancyToast.ERROR,true).show()
+
         }
 
     }
 
-    private fun showDialog(text:String){
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.bottomsheetayout)
-        val tView=findViewById<TextView>(R.id.chooseText)
-        val copy=findViewById<ImageButton>(R.id.copy)
-        tView.text=text
-        copy.setOnClickListener {
-            val clipBoardManager:ClipboardManager= getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip:ClipData=ClipData.newPlainText("copiedText",text)
-            clipBoardManager.setPrimaryClip(clip)
-            clip.description
-            Toast.makeText(this@ImageToText,"Text Copied Successfully",Toast.LENGTH_SHORT).show()
+    private fun showDialog(gettext:String){
+        val dialog = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.bottomsheetayout, null)
+        val btnClose = view.findViewById<Button>(R.id.idBtnDismiss)
+        val text=view.findViewById<TextView>(R.id.idTVCourseName)
+        val copyBtn=view.findViewById<ImageButton>(R.id.copy_btn)
+        copyBtn.setOnClickListener {
+            val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("text", gettext)
+            clipboardManager.setPrimaryClip(clipData)
+            FancyToast.makeText(this,"Text Copied",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,true).show()
         }
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+        text.text=gettext
+        dialog.setCancelable(false)
+        dialog.setContentView(view)
         dialog.show()
-        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        dialog.window?.setGravity(Gravity.BOTTOM)
-
     }
 
 
