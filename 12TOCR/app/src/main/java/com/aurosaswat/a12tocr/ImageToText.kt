@@ -47,10 +47,7 @@ class ImageToText : AppCompatActivity() {
             image.let { it ->
                 recognizer.process(it)
                     .addOnSuccessListener {
-        //                    Display the text
-//                        viewBinding.viewText.text=it.text
                         showDialog(it.text.toString())
-
                     }
                     .addOnFailureListener {
                         FancyToast.makeText(this,"Nothing to Show ",FancyToast.LENGTH_LONG,FancyToast.ERROR,true).show()
